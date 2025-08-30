@@ -198,9 +198,9 @@ def class_average():
 
 # --- Main execution ---
 
+with app.app_context():
+    db.create_all()
+
 if __name__ == '__main__':
-    # Creates the database and tables if they don't exist
-    with app.app_context():
-        db.create_all()
-    # Runs the Flask development server
     app.run(debug=True)
+
