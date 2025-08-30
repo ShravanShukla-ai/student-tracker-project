@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subject Topper</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Find Subject Topper</h1>
+            <p class="text-lg text-gray-600 mt-2">Select a subject to find the highest-scoring student.</p>
+        </header>
+
+        <div class="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow-md">
+            <form method="get" action="{{ url_for('subject_topper') }}" class="flex flex-col sm:flex-row items-center gap-4">
+                <div class="flex-grow w-full">
+                    <label for="subject" class="sr-only">Subject</label>
+                    <select id="subject" name="subject" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="" disabled {% if not selected_subject %}selected{% endif %}>-- Select a Subject --</option>
+                        {% for subject in subjects %}
+                            <option value="{{ subject }}" {% if subject == selected_subject %}selected{% endif %}>{{ subject }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="w-full sm:w-auto bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300">Find Topper</button>
+            </form>
+
+            <div class="mt-8 border-t pt-6">
+                {% if topper %}
+                    <div class="text-center p-6 bg-green-50 rounded-lg border border-green-200">
+                        <h2 class="text-2xl font-bold text-green-800">Top Performer in {{ selected_subject }}</h2>
+                        <p class="text-xl text-gray-700 mt-2">{{ topper.name }} (Roll No: {{ topper.roll_number }})</p>
+                        <p class="text-3xl font-bold text-green-600 mt-2">Score: {{ topper.top_score }}</p>
+                    </div>
+                {% elif selected_subject %}
+                     <div class="text-center py-10 px-6 bg-yellow-50 rounded-lg border border-yellow-200">
+                        <h3 class="text-xl font-semibold text-yellow-800">No Data Found</h3>
+                        <p class="text-gray-600 mt-2">No student data found for the subject "{{ selected_subject }}".</p>
+                    </div>
+                {% else %}
+                    <div class="text-center py-10 px-6 bg-gray-50 rounded-lg">
+                        <h3 class="text-xl font-semibold text-gray-700">Please select a subject to see the results.</h3>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mt-8 text-center">
+                 <a href="{{ url_for('index') }}" class="text-blue-600 hover:underline font-medium">&larr; Back to Main Page</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
